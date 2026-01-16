@@ -1,0 +1,51 @@
+<?php
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\ClubController;
+use App\Http\Controllers\JugadorController;
+use App\Http\Controllers\EquipoController;
+use App\Http\Controllers\JugadorEquipoCategoriaController;
+use App\Http\Controllers\ArbitroController;
+use App\Http\Controllers\NivelArbitroController;
+use App\Http\Controllers\TorneoController;
+use App\Http\Controllers\InscripcionController;
+
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+*/
+
+// -------------------- CRUD BASICO --------------------
+Route::apiResource('users', UserController::class);
+Route::apiResource('jugadores', JugadorController::class);
+Route::apiResource('torneos', TorneoController::class);
+Route::apiResource('inscripciones', InscripcionController::class);
+Route::apiResource('niveles_arbitro', NivelArbitroController::class);
+Route::apiResource('arbitros', ArbitroController::class);
+Route::apiResource('categorias', CategoriaController::class);
+Route::apiResource('clubes', ClubController::class);
+Route::apiResource('equipos', EquipoController::class);
+Route::apiResource('jugador_equipo_categorias', JugadorEquipoCategoriaController::class);
+
+// -------------------- JUGADOR RUTAS PERSONALIZADAS --------------------
+Route::prefix('jugadores')->group(function () {
+    Route::post('{jugador}/traspaso', [JugadorController::class, 'traspaso']);
+    Route::post('{jugador}/inscribir', [JugadorController::class, 'inscribirTorneo']);
+    Route::post('image', [JugadorController::class, 'imageUpload']);
+    Route::get('image/{nombre}', [JugadorController::class, 'image']);
+});
+
+// -------------------- ARBITRO RUTAS PERSONALIZADAS --------------------
+Route::prefix('arbitros')->group(function () {
+    Route::post('image', [ArbitroController::class, 'imageUpload']);
+    Route::get('image/{nombre}', [ArbitroController::class, 'image']);
+});
+
+// -------------------- RUTA PROTEGIDA --------------------
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
