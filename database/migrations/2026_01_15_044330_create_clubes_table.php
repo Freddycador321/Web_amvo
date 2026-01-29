@@ -18,7 +18,7 @@ public function up(): void
         $table->string('direccion')->nullable();
         $table->string('telefono', 20)->nullable();
         $table->string('email')->nullable();
-        $table->string('foto');
+        $table->string('foto')->nullable();;
         $table->enum('estado', ['ACTIVO', 'INACTIVO'])->default('ACTIVO');
         $table->timestamps();
     });

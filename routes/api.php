@@ -45,6 +45,12 @@ Route::prefix('arbitros')->group(function () {
     Route::get('image/{nombre}', [ArbitroController::class, 'image']);
 });
 
+// -------------------- CLUBES RUTAS PERSONALIZADAS --------------------
+Route::prefix('clubes')->group(function () {
+    Route::post('image', [ClubController::class, 'imageUpload']);
+    Route::get('image/{nombre}', [ClubController::class, 'image']);
+});
+
 // -------------------- RUTA PROTEGIDA --------------------
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

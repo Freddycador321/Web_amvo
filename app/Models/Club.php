@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Club extends Model
 {
     use HasFactory;
+    protected $table = 'clubes';
 
-    protected $fillable = ['nombre','ciudad','direccion','telefono','email','estado'];
+    protected $fillable = ['nombre','ciudad','direccion','telefono','email','estado','foto'];
 
     public function equipos()
     {

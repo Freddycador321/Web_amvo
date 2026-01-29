@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Club;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpKernel\HttpCache\Store;
+use Illuminate\Support\Facades\File;
+
 
 class ClubController extends Controller
 {
@@ -82,5 +86,26 @@ class ClubController extends Controller
         }
 
         return response()->json(['message' => 'No existe el club'], 404);
+    }
+    public function imageUpload(Request $request){
+        $imagen=$request->file('image');
+        $path_img='clubes';
+        $imageName=$path_img.'/'.$imagen->getClientOriginalName();
+        try{
+            Storage::disk('public')->put($imageName,File::get($imagen));
+        }
+        catch (\Exception $exception){
+            return response('error',400);
+        }
+        return response()->json(['image'=>$imageName]);
+    }
+    public function image($nombre){
+       try{
+             return response()->download(public_path('storage').'/clubes/'.$nombre,$nombre);
+       }
+       catch(\Exception $exception){
+            return response()->json("error",400);
+       }
+
     }
 }
