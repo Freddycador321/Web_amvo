@@ -9,22 +9,29 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-public function up(): void
-{
-    Schema::create('arbitros', function (Blueprint $table) {
-        $table->id();
-        $table->string('nombre');
-        $table->string('apellido');
-        $table->string('ci')->unique();
-        $table->string('telefono', 20)->nullable();
-        $table->string('email')->nullable();
-        $table->foreignId('nivel_id')->constrained('niveles_arbitro')->onDelete('cascade');
-        $table->enum('estado', ['ACTIVO', 'INACTIVO'])->default('ACTIVO');
-        $table->string('foto');
-        $table->timestamps();
-    });
-}
+    public function up(): void
+    {
+        Schema::create('arbitros', function (Blueprint $table) {
+            $table->id();
+            
+            // Información personal
+            $table->string('nombre', 100);
+            $table->string('apellido', 100);
+            $table->string('ci')->unique()->nullable();
+            $table->string('telefono', 20)->nullable();
+            $table->string('email', 100)->nullable();
+            $table->string('foto')->nullable(); // Foto del árbitro
 
+            // Nivel de arbitraje (estático)
+            $table->enum('nivel', ['NIVEL 1','NIVEL 2','NIVEL 3','NIVEL 4','NIVEL 5'])->default('NIVEL 1');
+
+            // Estado y observaciones
+            $table->enum('estado', ['ACTIVO', 'INACTIVO'])->default('ACTIVO');
+            $table->text('observaciones')->nullable();
+
+            $table->timestamps();
+        });
+    }
 
     /**
      * Reverse the migrations.

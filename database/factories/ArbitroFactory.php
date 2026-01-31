@@ -2,9 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Arbitro;
-use App\Models\NivelArbitro;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Arbitro;
 
 class ArbitroFactory extends Factory
 {
@@ -13,14 +12,15 @@ class ArbitroFactory extends Factory
     public function definition(): array
     {
         return [
-            'nombre'   => $this->faker->firstName(),
-            'apellido' => $this->faker->lastName(),
-            'ci'       => $this->faker->unique()->numerify('########'),
-            'telefono' => $this->faker->optional()->phoneNumber(),
-            'email'    => $this->faker->optional()->safeEmail(),
-            'nivel_id' => NivelArbitro::inRandomOrder()->first()->id,
-            'estado'   => $this->faker->randomElement(['ACTIVO', 'INACTIVO']),
-            'foto'     => 'arbitros/default.png',
+            'nombre' => $this->faker->firstName,
+            'apellido' => $this->faker->lastName,
+            'ci' => $this->faker->unique()->numberBetween(1000000, 99999999),
+            'telefono' => $this->faker->phoneNumber,
+            'email' => $this->faker->safeEmail,
+            'foto' => null, // Puedes poner ruta de foto o faker->image()
+            'nivel' => $this->faker->randomElement(Arbitro::NIVELES),
+            'estado' => $this->faker->randomElement(Arbitro::ESTADOS),
+            'observaciones' => $this->faker->optional()->text(100),
         ];
     }
 }

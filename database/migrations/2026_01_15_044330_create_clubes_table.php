@@ -12,16 +12,22 @@ return new class extends Migration
 public function up(): void
 {
     Schema::create('clubes', function (Blueprint $table) {
-        $table->id();
-        $table->string('nombre');
-        $table->string('ciudad')->nullable();
-        $table->string('direccion')->nullable();
-        $table->string('telefono', 20)->nullable();
-        $table->string('email')->nullable();
-        $table->string('foto')->nullable();;
-        $table->enum('estado', ['ACTIVO', 'INACTIVO'])->default('ACTIVO');
-        $table->timestamps();
-    });
+    $table->id();
+    $table->string('nombre');
+    $table->string('logo');
+    $table->string('sigla');
+    $table->string('direccion');
+    $table->string('telefono');
+    $table->string('email');
+    $table->string('presidente');
+    $table->string('fecha_fundacion');
+    $table->string('colores_oficiales');
+    $table->string('ciudad');
+    $table->string('departamento');
+    $table->enum('estado',['activo','inactivo'])->default('activo');
+    $table->timestamps();
+});
+
 }
 
 

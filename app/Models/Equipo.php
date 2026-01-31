@@ -9,8 +9,16 @@ class Equipo extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nombre','club_id','categoria_id','entrenador_id','estado'];
+    protected $fillable = [
+        'nombre',
+        'club_id',
+        'categoria_id',
+        'rama_id',
+        'entrenador_id',
+        'estado'
+    ];
 
+    // Relaciones
     public function club()
     {
         return $this->belongsTo(Club::class);
@@ -21,18 +29,33 @@ class Equipo extends Model
         return $this->belongsTo(Categoria::class);
     }
 
+    public function rama()
+    {
+        return $this->belongsTo(Rama::class);
+    }
+
     public function entrenador()
     {
-        return $this->belongsTo(User::class,'entrenador_id');
+        return $this->belongsTo(Entrenador::class);
     }
 
-    public function jugadorEquipoCategorias()
+    public function jugadores()
     {
-        return $this->hasMany(JugadorEquipoCategoria::class);
+        return $this->hasMany(Jugador::class);
     }
 
-    public function scopeActivo($query)
+    public function torneosEquipos()
     {
-        return $query->where('estado','ACTIVO');
+        return $this->hasMany(TorneoEquipo::class);
+    }
+
+    public function partidosA()
+    {
+        return $this->hasMany(Partido::class,'equipo_a_id');
+    }
+
+    public function partidosB()
+    {
+        return $this->hasMany(Partido::class,'equipo_b_id');
     }
 }

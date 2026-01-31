@@ -9,15 +9,24 @@ class Arbitro extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nombre','apellido','ci','telefono','email','nivel_id','estado','foto'];
+    protected $table = 'arbitros';
 
-    public function nivel()
-    {
-        return $this->belongsTo(NivelArbitro::class,'nivel_id');
-    }
+    // Campos asignables masivamente
+    protected $fillable = [
+        'nombre',
+        'apellido',
+        'ci',
+        'telefono',
+        'email',
+        'foto',
+        'nivel',
+        'estado',
+        'observaciones'
+    ];
 
-    public function scopeActivo($query)
-    {
-        return $query->where('estado','ACTIVO');
-    }
+    // Valores posibles de nivel (enum estático)
+    const NIVELES = ['NIVEL 1','NIVEL 2','NIVEL 3'];
+
+    // Valores posibles de estado
+    const ESTADOS = ['ACTIVO','INACTIVO'];
 }

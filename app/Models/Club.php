@@ -7,18 +7,30 @@ use Illuminate\Database\Eloquent\Model;
 
 class Club extends Model
 {
-    use HasFactory;
     protected $table = 'clubes';
+    protected $fillable = [
 
-    protected $fillable = ['nombre','ciudad','direccion','telefono','email','estado','foto'];
+    'nombre',
+    'logo',
+    'sigla',
+    'direccion',
+    'telefono',
+    'email',
+    'presidente',
+    'fecha_fundacion',
+    'colores_oficiales',
+    'ciudad',
+    'departamento',
+    'estado'
+];
 
-    public function equipos()
-    {
+
+    public function equipos(){
         return $this->hasMany(Equipo::class);
     }
 
-    public function scopeActivo($query)
-    {
-        return $query->where('estado','ACTIVO');
+    public function jugadores(){
+        return $this->hasMany(Jugador::class);
     }
 }
+

@@ -4,83 +4,91 @@ namespace App\Http\Controllers;
 
 use App\Models\Torneo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class TorneoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Listar torneos
     public function index()
-    {
-        //
-        $torneos= Torneo::get();
-        return response()->json($torneos);
-    }
+{
+    $torneos = Torneo::with([
+        'tablas.equipo',
+        'tablas.categoria',
+        'tablas.rama'
+    ])->get();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+    return response()->json($torneos);
+}
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
+    // Crear torneo
     public function store(Request $request)
     {
-        //
-        $torneo=Torneo::create($request->all());
+        $validator = Validator::make($request->all(), [
+            'nombre'       => 'required|string|max:150',
+            'descripcion'  => 'nullable|string',
+            'fecha_inicio' => 'nullable|date',
+            'fecha_fin'    => 'nullable|date|after_or_equal:fecha_inicio',
+            'lugar'        => 'nullable|string|max:150',
+            'estado'       => 'nullable|in:activo,finalizado,cancelado'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors'=>$validator->errors()],422);
+        }
+
+        Torneo::create($request->all());
         return $this->index();
     }
 
-    /**
-     * Display the specified resource.
-     */
+    // Mostrar torneo
     public function show(string $id)
     {
-        //
+        $torneo = Torneo::with(['equipos','partidos'])->find($id);
+
+        if ($torneo) {
+            return response()->json($torneo);
+        }
+
+        return response()->json(['message'=>'No existe el torneo'],404);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
+    // Actualizar torneo
     public function update(Request $request, string $id)
     {
-        //
-        $torneo=Torneo::find($id);
-        if($torneo){
-            $torneo->update($request->all());
-            return $this->index();
+        $torneo = Torneo::find($id);
+
+        if (!$torneo) {
+            return response()->json(['message'=>'No existe el torneo'],404);
         }
-        else{
-            return response()->json('No existe el usuario',409);
+
+        $validator = Validator::make($request->all(), [
+            'nombre'       => 'sometimes|required|string|max:150',
+            'descripcion'  => 'nullable|string',
+            'fecha_inicio' => 'nullable|date',
+            'fecha_fin'    => 'nullable|date|after_or_equal:fecha_inicio',
+            'lugar'        => 'nullable|string|max:150',
+            'estado'       => 'nullable|in:activo,finalizado,cancelado'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors'=>$validator->errors()],422);
         }
+
+        $torneo->update($request->all());
+        return $this->index();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    // Eliminar torneo
     public function destroy(string $id)
     {
-        //
         $torneo = Torneo::find($id);
 
         if ($torneo) {
             $torneo->delete();
-
             return $this->index();
         }
 
-        return response()->json(['message' => 'No existe el torneo'], 404);
+        return response()->json(['message'=>'No existe el torneo'],404);
     }
 }

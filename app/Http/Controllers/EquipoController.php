@@ -4,83 +4,73 @@ namespace App\Http\Controllers;
 
 use App\Models\Equipo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class EquipoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Listar equipos
     public function index()
     {
-        //
-        $equipos= Equipo::get();
+        $equipos = Equipo::with(['club','categoria','rama','entrenador','jugadores'])->get();
         return response()->json($equipos);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Crear equipo
     public function store(Request $request)
     {
-        //
-        $equipo=Equipo::create($request->all());
+        $validator = Validator::make($request->all(), [
+            'nombre'        => 'required|string|max:150',
+            'club_id'       => 'required|exists:clubes,id',
+            'categoria_id'  => 'required|exists:categorias,id',
+            'rama_id'       => 'required|exists:ramas,id',
+            'entrenador_id' => 'nullable|exists:entrenadores,id',
+            'estado'        => 'nullable|in:activo,inactivo'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors'=>$validator->errors()],422);
+        }
+
+        Equipo::create($request->all());
         return $this->index();
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
+    // Actualizar equipo
     public function update(Request $request, string $id)
     {
-        //
-        $equipo=Equipo::find($id);
-        if($equipo){
-            $equipo->update($request->all());
-            return $this->index();
+        $equipo = Equipo::find($id);
+
+        if (!$equipo) {
+            return response()->json(['message'=>'No existe el equipo'],404);
         }
-        else{
-            return response()->json('No existe el equipo',409);
+
+        $validator = Validator::make($request->all(), [
+            'nombre'        => 'sometimes|required|string|max:150',
+            'club_id'       => 'sometimes|required|exists:clubes,id',
+            'categoria_id'  => 'sometimes|required|exists:categorias,id',
+            'rama_id'       => 'sometimes|required|exists:ramas,id',
+            'entrenador_id' => 'nullable|exists:entrenadores,id',
+            'estado'        => 'nullable|in:activo,inactivo'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors'=>$validator->errors()],422);
         }
+
+        $equipo->update($request->all());
+        return $this->index();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    // Eliminar equipo
     public function destroy(string $id)
     {
-        //
         $equipo = Equipo::find($id);
 
         if ($equipo) {
             $equipo->delete();
-
             return $this->index();
         }
 
-        return response()->json(['message' => 'No existe el equipo'], 404);
+        return response()->json(['message'=>'No existe el equipo'],404);
     }
 }

@@ -9,30 +9,24 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-public function up(): void
-{
-    Schema::create('jugadores', function (Blueprint $table) {
-        $table->id();
-        $table->string('nombre');
-        $table->string('apellido');
-        $table->string('ci')->unique();
-        $table->date('fecha_naci');
-        $table->enum('rama', ['MASCULINO', 'FEMENINO']);
-        $table->string('nacionalidad')->nullable();
-        $table->string('direccion')->nullable();
-        $table->string('telefono', 20)->nullable();
-        $table->string('email')->nullable();
-        $table->integer('altura_cm')->nullable();
-        $table->integer('peso_kg')->nullable();
-        $table->string('posicion')->nullable();
-        $table->enum('estado', ['ACTIVO', 'INACTIVO'])->default('ACTIVO');
-        $table->string('contacto_emergencia')->nullable();
-        $table->string('telefono_emergencia', 20)->nullable();
-        $table->string('foto')->nullable();
-        $table->timestamps();
-    });
-}
-
+    public function up(): void
+    {
+        Schema::create('jugadores', function (Blueprint $table) {
+            $table->id();
+            $table->string('nombre',100);
+            $table->string('apellido',100);
+            $table->string('ci');
+            $table->foreignId('club_id')->constrained('clubes')->onDelete('cascade');
+            $table->foreignId('equipo_id')->constrained('equipos')->onDelete('cascade');
+            $table->foreignId('categoria_id')->constrained('categorias')->onDelete('cascade');
+            $table->foreignId('rama_id')->constrained('ramas')->onDelete('cascade');
+            $table->date('fecha_nacimiento');
+            $table->string('posicion',50)->nullable();
+            $table->string('foto',250)->nullable();
+            $table->enum('estado',['activo','suspendido','retirado'])->default('activo');
+            $table->timestamps();
+        });
+    }
 
     /**
      * Reverse the migrations.
