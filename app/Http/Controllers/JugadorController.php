@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categoria;
+use App\Models\Club;
+use App\Models\Equipo;
 use Illuminate\Http\Request;
 use App\Models\Jugador;
+use App\Models\Rama;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
@@ -13,30 +17,19 @@ class JugadorController extends Controller
     // Listar jugadores
     public function index()
     {
-        $jugadores = Jugador::with('club','equipo','categoria','rama')->get();
-        return response()->json($jugadores);
+        $jugadores = Jugador::Index();
+        $clubes = Club::all();
+        $equipos = Equipo::all();
+        $categorias = Categoria::all();
+        $ramas = Rama::all();
+        //Parte1 Visualizacion
+        // dd($jugadores);
+        return response()->json(['jugadores'=> $jugadores, 'clubes'=> $clubes, 'equipos'=>$equipos,'categorias'=>$categorias,'ramas'=>$ramas]);
     }
 
     // Crear jugador
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'nombre' => 'required|string|max:100',
-            'apellido' => 'required|string|max:100',
-            'club_id' => 'required|exists:clubes,id',
-            'equipo_id' => 'required|exists:equipos,id',
-            'categoria_id' => 'required|exists:categorias,id',
-            'rama_id' => 'required|exists:ramas,id',
-            'fecha_nacimiento' => 'required|date',
-            'posicion' => 'nullable|string|max:50',
-            'estado' => 'nullable|in:activo,suspendido,retirado'
-
-
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors'=>$validator->errors()],422);
-        }
 
         Jugador::create($request->all());
         return $this->index();

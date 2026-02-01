@@ -58,4 +58,20 @@ class Equipo extends Model
     {
         return $this->hasMany(Partido::class,'equipo_b_id');
     }
+    public function scopeIndex($query){
+    return $query
+        ->leftJoin('clubes', 'equipos.club_id', 'clubes.id')
+        ->leftJoin('categorias', 'equipos.categoria_id', 'categorias.id')
+        ->leftJoin('ramas', 'equipos.rama_id', 'ramas.id')
+        ->leftJoin('entrenadores', 'equipos.entrenador_id', 'entrenadores.id')
+        ->select(
+            'equipos.*',
+            'clubes.nombre as nombre_club',
+            'categorias.nombre as nombre_categoria',
+            'ramas.nombre as nombre_rama',
+            'entrenadores.nombre as nombre_entrenador'
+        )
+        ->get();
+}
+
 }

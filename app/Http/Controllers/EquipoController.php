@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categoria;
+use App\Models\Club;
+use App\Models\Entrenador;
 use App\Models\Equipo;
+use App\Models\Rama;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -10,26 +14,38 @@ class EquipoController extends Controller
 {
     // Listar equipos
     public function index()
-    {
-        $equipos = Equipo::with(['club','categoria','rama','entrenador','jugadores'])->get();
-        return response()->json($equipos);
-    }
+{
+    $equipos = Equipo::index();
+    $clubes = Club::all();
+    $categorias = Categoria::all();
+    $ramas = Rama::all();
+    $entrenadores = Entrenador::all();
+
+    return response()->json([
+        'equipos' => $equipos,
+        'clubes' => $clubes,
+        'categorias' => $categorias,
+        'ramas' => $ramas,
+        'entrenadores' => $entrenadores, // <- aquí
+    ]);
+}
+
 
     // Crear equipo
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'nombre'        => 'required|string|max:150',
-            'club_id'       => 'required|exists:clubes,id',
-            'categoria_id'  => 'required|exists:categorias,id',
-            'rama_id'       => 'required|exists:ramas,id',
-            'entrenador_id' => 'nullable|exists:entrenadores,id',
-            'estado'        => 'nullable|in:activo,inactivo'
-        ]);
+        // $validator = Validator::make($request->all(), [
+        //     'nombre'        => 'required|string|max:150',
+        //     'club_id'       => 'required|exists:clubes,id',
+        //     'categoria_id'  => 'required|exists:categorias,id',
+        //     'rama_id'       => 'required|exists:ramas,id',
+        //     'entrenador_id' => 'nullable|exists:entrenadores,id',
+        //     'estado'        => 'nullable|in:activo,inactivo'
+        // ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors'=>$validator->errors()],422);
-        }
+        // if ($validator->fails()) {
+        //     return response()->json(['errors'=>$validator->errors()],422);
+        // }
 
         Equipo::create($request->all());
         return $this->index();

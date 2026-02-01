@@ -38,7 +38,7 @@ Route::apiResource('equipos', EquipoController::class);
 Route::apiResource('jugador-equipo-categorias', JugadorEquipoCategoriaController::class);
 Route::apiResource('entrenadores', EntrenadorController::class);
 Route::apiResource('ramas', RamaController::class);
-// Route::apiResource('torneos-equipos', TorneoEquipoController::class);
+//Route::apiResource('torneos-equipos', TorneoEquipoController::class);
 Route::apiResource('partidos', PartidoController::class);
 Route::apiResource('historial-jugadores', HistorialJugadorController::class);
 
