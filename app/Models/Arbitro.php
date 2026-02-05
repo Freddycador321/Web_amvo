@@ -28,5 +28,5 @@ class Arbitro extends Model
     const NIVELES = ['NIVEL 1','NIVEL 2','NIVEL 3'];
 
     // Valores posibles de estado
-    const ESTADOS = ['ACTIVO','INACTIVO'];
+    //const ESTADOS = ['ACTIVO','INACTIVO'];
 }

@@ -9,6 +9,7 @@ use App\Http\Controllers\JugadorController;
 use App\Http\Controllers\EquipoController;
 use App\Http\Controllers\JugadorEquipoCategoriaController;
 use App\Http\Controllers\ArbitroController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EntrenadorController;
 use App\Http\Controllers\HistorialJugadorController;
 use App\Http\Controllers\NivelArbitroController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\PartidoController;
 use App\Http\Controllers\RamaController;
 use App\Http\Controllers\TorneoEquipoController;
 use App\Http\Controllers\TablaController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,5 +80,6 @@ Route::get('historial-jugadores', [HistorialJugadorController::class, 'index']);
 Route::get('historial-jugadores/buscar', [HistorialJugadorController::class, 'buscar']);
 Route::post('historial-jugadores', [HistorialJugadorController::class, 'store']);
 
-
+///////////LOGIN
+Route::post('/login', [AuthController::class, 'login']);
 
