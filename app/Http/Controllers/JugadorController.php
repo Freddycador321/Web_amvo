@@ -23,7 +23,6 @@ class JugadorController extends Controller
         $categorias = Categoria::all();
         $ramas = Rama::all();
         //Parte1 Visualizacion
-        // dd($jugadores);
         return response()->json(['jugadores'=> $jugadores, 'clubes'=> $clubes, 'equipos'=>$equipos,'categorias'=>$categorias,'ramas'=>$ramas]);
     }
 
@@ -70,21 +69,27 @@ class JugadorController extends Controller
     public function imageUpload(Request $request)
     {
         $imagen = $request->file('image');
+        if (!$imagen) {
+            return response()->json(['error' => 'No file provided'], 400);
+        }
         $path_img = 'jugadores';
-        $imageName = $path_img.'/'.$imagen->getClientOriginalName();
+        $imageName = $imagen->getClientOriginalName();
+        $fullPath = $path_img . '/' . $imageName;
         try {
-            Storage::disk('public')->put($imageName, File::get($imagen));
+            Storage::disk('public')->put($fullPath, File::get($imagen));
         } catch (\Exception $exception) {
             return response('error',400);
         }
-        return response()->json(['image'=>$imageName]);
+        // Devolver solo el nombre del archivo
+        return response()->json(['image' => $imageName]);
     }
 
     // Descargar imagen
     public function image($nombre)
     {
         try {
-            return response()->download(public_path('storage').'/jugadores/'.$nombre,$nombre);
+            $fullPath = public_path('storage') . '/jugadores/' . $nombre;
+            return response()->file($fullPath);
         } catch(\Exception $exception) {
             return response()->json("error",400);
         }

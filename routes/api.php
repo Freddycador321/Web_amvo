@@ -66,9 +66,9 @@ Route::prefix('clubes')->group(function () {
 });
 
 // -------------------- RUTA PROTEGIDA --------------------
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 //-------------------TABLAS----------------------------
 Route::get('tablas', [TablaController::class, 'index']);
 Route::post('tablas', [TablaController::class, 'store']);
@@ -82,4 +82,4 @@ Route::post('historial-jugadores', [HistorialJugadorController::class, 'store'])
 
 ///////////LOGIN
 Route::post('/login', [AuthController::class, 'login']);
-
+Route::post('/logout', [AuthController::class, 'logout']);
