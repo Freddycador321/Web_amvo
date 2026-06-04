@@ -19,7 +19,7 @@ class Club extends Model
     'presidente',
     'fecha_fundacion',
     'colores_oficiales',
-    'ciudad',
+    'municipio',
     'departamento',
     'estado'
 ];

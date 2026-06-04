@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Categoria;
 use App\Models\Club;
-use App\Models\Entrenador;
 use App\Models\Equipo;
 use App\Models\Rama;
 use Illuminate\Http\Request;
@@ -19,14 +18,12 @@ class EquipoController extends Controller
     $clubes = Club::all();
     $categorias = Categoria::all();
     $ramas = Rama::all();
-    $entrenadores = Entrenador::all();
 
     return response()->json([
         'equipos' => $equipos,
         'clubes' => $clubes,
         'categorias' => $categorias,
         'ramas' => $ramas,
-        'entrenadores' => $entrenadores, // <- aquí
     ]);
 }
 
@@ -39,7 +36,6 @@ class EquipoController extends Controller
         //     'club_id'       => 'required|exists:clubes,id',
         //     'categoria_id'  => 'required|exists:categorias,id',
         //     'rama_id'       => 'required|exists:ramas,id',
-        //     'entrenador_id' => 'nullable|exists:entrenadores,id',
         //     'estado'        => 'nullable|in:activo,inactivo'
         // ]);
 
@@ -65,7 +61,6 @@ class EquipoController extends Controller
             'club_id'       => 'sometimes|required|exists:clubes,id',
             'categoria_id'  => 'sometimes|required|exists:categorias,id',
             'rama_id'       => 'sometimes|required|exists:ramas,id',
-            'entrenador_id' => 'nullable|exists:entrenadores,id',
             'estado'        => 'nullable|in:activo,inactivo'
         ]);
 

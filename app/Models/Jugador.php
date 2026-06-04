@@ -45,22 +45,18 @@ class Jugador extends Model
         return $this->belongsTo(Rama::class);
     }
 
-    public function historial()
-    {
-        return $this->hasMany(HistorialJugador::class);
-    }
-
     public function jugadorEquipoCategorias()
     {
         return $this->hasMany(JugadorEquipoCategoria::class);
     }
     //Para traer 
+    //Para traer
     public function scopeIndex($query){
         return $query->join('clubes', 'jugadores.club_id','clubes.id')
         ->join('equipos','jugadores.equipo_id','equipos.id')
         ->join('categorias','jugadores.categoria_id','categorias.id')
         ->join('ramas','jugadores.rama_id','ramas.id')
         ->select('jugadores.*','clubes.nombre as nombre_club','equipos.nombre as nombre_equipo','categorias.nombre as nombre_categoria','ramas.nombre as nombre_rama')
-        ->get(); 
+        ->get();
     }
 }

@@ -14,7 +14,6 @@ class Equipo extends Model
         'club_id',
         'categoria_id',
         'rama_id',
-        'entrenador_id',
         'estado'
     ];
 
@@ -34,42 +33,21 @@ class Equipo extends Model
         return $this->belongsTo(Rama::class);
     }
 
-    public function entrenador()
-    {
-        return $this->belongsTo(Entrenador::class);
-    }
-
     public function jugadores()
     {
         return $this->hasMany(Jugador::class);
     }
 
-    public function torneosEquipos()
-    {
-        return $this->hasMany(TorneoEquipo::class);
-    }
-
-    public function partidosA()
-    {
-        return $this->hasMany(Partido::class,'equipo_a_id');
-    }
-
-    public function partidosB()
-    {
-        return $this->hasMany(Partido::class,'equipo_b_id');
-    }
     public function scopeIndex($query){
     return $query
         ->leftJoin('clubes', 'equipos.club_id', 'clubes.id')
         ->leftJoin('categorias', 'equipos.categoria_id', 'categorias.id')
         ->leftJoin('ramas', 'equipos.rama_id', 'ramas.id')
-        ->leftJoin('entrenadores', 'equipos.entrenador_id', 'entrenadores.id')
         ->select(
             'equipos.*',
             'clubes.nombre as nombre_club',
             'categorias.nombre as nombre_categoria',
-            'ramas.nombre as nombre_rama',
-            'entrenadores.nombre as nombre_entrenador'
+            'ramas.nombre as nombre_rama'
         )
         ->get();
 }

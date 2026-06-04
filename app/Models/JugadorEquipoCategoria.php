@@ -28,11 +28,6 @@ class JugadorEquipoCategoria extends Model
         return $this->belongsTo(Categoria::class);
     }
 
-    public function inscripciones()
-    {
-        return $this->hasMany(Inscripcion::class);
-    }
-
     public function scopeActuales($query)
     {
         return $query->whereNull('fecha_fin');

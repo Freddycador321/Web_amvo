@@ -22,18 +22,18 @@ class ClubController extends Controller
     {
         // Validación de campos
         $validator = Validator::make($request->all(), [
-            'nombre'             => 'string',
-            'logo'               => 'string',
-            'sigla'              => 'string',
-            'direccion'          => 'string',
-            'telefono'           => 'string',
-            'email'              => 'email',
-            'presidente'         => 'string',
-            'fecha_fundacion'    => 'date',
-            'colores_oficiales'  => 'string',
-            'ciudad'             => 'string',
-            'departamento'       => 'string',
-            'estado'             => 'in:activo,inactivo'
+            'nombre'             => 'required|string|max:150',
+            'logo'               => 'nullable|string|max:255',
+            'sigla'              => 'nullable|string|max:50',
+            'direccion'          => 'nullable|string|max:255',
+            'telefono'           => 'nullable|string|max:30',
+            'email'              => 'nullable|email|max:100',
+            'presidente'         => 'nullable|string|max:100',
+            'fecha_fundacion'    => 'nullable|date',
+            'colores_oficiales'  => 'nullable|string|max:100',
+            'municipio'          => 'nullable|string|max:100',
+            'departamento'       => 'nullable|string|max:100',
+            'estado'             => 'nullable|in:activo,inactivo'
         ]);
 
         // Si falla la validación
@@ -78,7 +78,7 @@ class ClubController extends Controller
             'presidente'         => 'nullable|string|max:100',
             'fecha_fundacion'    => 'nullable|date',
             'colores_oficiales'  => 'nullable|string|max:100',
-            'ciudad'             => 'nullable|string|max:100',
+            'municipio'          => 'nullable|string|max:100',
             'departamento'       => 'nullable|string|max:100',
             'estado'             => 'nullable|in:activo,inactivo'
         ]);

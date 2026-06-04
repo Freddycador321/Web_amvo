@@ -9,7 +9,12 @@ class Categoria extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nombre','descripcion','edad_min','edad_max'];
+    protected $fillable = ['nombre','descripcion','edad_min','edad_max','rama_id'];
+
+    public function rama()
+    {
+        return $this->belongsTo(Rama::class);
+    }
 
     public function equipos()
     {

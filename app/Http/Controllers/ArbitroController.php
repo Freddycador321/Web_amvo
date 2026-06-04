@@ -11,7 +11,7 @@ class ArbitroController extends Controller
 {
     public function index(){
         $arbitros = Arbitro::get();
-        return response()->json($arbitros); 
+        return response()->json($arbitros);
     }//CRUD
     public function destroy($id){
         $arbitro=Arbitro::find($id);

@@ -8,13 +8,8 @@ use App\Models\User;
 use App\Models\Club;
 use App\Models\Categoria;
 use App\Models\Rama;
-use App\Models\Entrenador;
 use App\Models\Equipo;
 use App\Models\Jugador;
-use App\Models\Torneo;
-use App\Models\TorneoEquipo;
-use App\Models\Partido;
-use App\Models\HistorialJugador;
 use Carbon\Carbon;
 
 class DatabaseSeeder extends Seeder
